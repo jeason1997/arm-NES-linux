@@ -62,12 +62,24 @@ extern int GetJoypadInput(void);
 
 static int lcd_fb_display_px(WORD color, int x, int y)
 {
-	unsigned char  *pen8;
-	unsigned short *pen16;
-	pen8 = (unsigned char *)(fb_mem + y*line_width + x*px_width);
-	pen16 = (unsigned short *)pen8;
-	*pen16 = color;
+	// unsigned char  *pen8;
+	// unsigned short *pen16;
+	// pen8 = (unsigned char *)(fb_mem + y*line_width + x*px_width);
+	// pen16 = (unsigned short *)pen8;
+	// *pen16 = color;
 	
+	// return 0;
+
+    //修改InfoNES_System_Linux.cpp文件中的static int lcd_fb_display_px函数（调整spi屏幕的颜色）：
+	WORD *pen16;
+	unsigned char r, g, b;
+	r = ((color >> 10) & 0x1f);
+	g = ((color >> 5) & 0x3f);
+	b = (color & 0x1f);
+
+	color = r<<11|g<<6|b;
+	pen16 = (WORD *)(fb_mem + y*line_width + x*px_width);
+	*pen16 = color;
 	return 0;
 }
 
@@ -202,6 +214,7 @@ WORD NesPalette[64] =
 	0x7fff, 0x579f, 0x635f, 0x6b3f, 0x7f1f, 0x7f1b, 0x7ef6, 0x7f75,
 	0x7f94, 0x73f4, 0x57d7, 0x5bf9, 0x4ffe, 0x0000, 0x0000, 0x0000
 };
+
 
 /*===================================================================*/
 /*                                                                   */

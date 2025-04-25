@@ -1,4 +1,4 @@
-KERN_DIR = /opt/linux-4.1.24
+KERN_DIR = /opt/linux-5.7.1
 
 all:
 	make -C $(KERN_DIR) M=`pwd` modules 
